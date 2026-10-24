@@ -15,7 +15,7 @@ RUN apt-get update && \
 
 WORKDIR /workspace
 
-RUN git clone https://github.com/AdrianMTZVazquez/SD2026-2A.git
+RUN git clone https://github.com/achelijk/SD2026-2.git
 
 CMD ["sleep", "infinity"]
 # CMD ["/bin/bash"]

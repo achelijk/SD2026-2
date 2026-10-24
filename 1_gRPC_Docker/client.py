@@ -9,7 +9,8 @@ import saludo_pb2_grpc
 
 # Nombre del contenedor servidor dentro de la red de Docker
 SERVIDOR = os.environ.get("SERVIDOR", "servidor:50051")
-DOCKER_CONTEXT = os.environ.get("DEBIAN_FRONTEND")
+DOCKER_CONTEXT = os.environ.get("DEBIAN_FRONTEND", "")
+
 
 def ciclo():
     canal = grpc.insecure_channel(SERVIDOR)
