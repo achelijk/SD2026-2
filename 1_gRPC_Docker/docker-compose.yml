@@ -1,21 +1,51 @@
-# Dos contenedores de la misma imagen conectados por gRPC
+version: '3.8'
+
+networks:
+  grpc-net:
+    driver: bridge
+
 services:
   servidor:
     build: .
     image: grpc-img
     container_name: servidor
     hostname: servidor
-    command: ["python3", "server.py"]
-    networks: [grpc-net]
+    networks:
+      - grpc-net
+    command: python3 server.py
 
-  cliente:
-    build: .
+  cliente1:
     image: grpc-img
-    command: ["python3", "client.py"]
+    container_name: cliente1
+    hostname: cliente1
+    networks:
+      - grpc-net
     environment:
-      - SERVIDOR=servidor:50051
-    depends_on: [servidor]
-    networks: [grpc-net]
+      - CLIENTE_ID=Alfa
+    command: python3 client.py
+    depends_on:
+      - servidor
 
-networks:
-  grpc-net:
+  cliente2:
+    image: grpc-img
+    container_name: cliente2
+    hostname: cliente2
+    networks:
+      - grpc-net
+    environment:
+      - CLIENTE_ID=Beta
+    command: python3 client.py
+    depends_on:
+      - servidor
+
+  cliente3:
+    image: grpc-img
+    container_name: cliente3
+    hostname: cliente3
+    networks:
+      - grpc-net
+    environment:
+      - CLIENTE_ID=Gamma
+    command: python3 client.py
+    depends_on:
+      - servidor

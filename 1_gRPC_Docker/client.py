@@ -11,7 +11,9 @@ DOCKER_CONTEXT = os.environ.get("DEBIAN_FRONTEND", "")
 def ciclo():
     canal = grpc.insecure_channel(SERVIDOR)
     stub = saludo_pb2_grpc.SaludoStub(canal)
-    nombre = socket.gethostname()
+    
+    # Toma el nombre de CLIENTE_ID o usa el hostname por defecto
+    nombre = os.environ.get("CLIENTE_ID", socket.gethostname())
 
     idiomas = ["es", "en", "fr"]
     cnt = 0
@@ -23,7 +25,7 @@ def ciclo():
         r = stub.Decir(saludo_pb2.Peticion(nombre=f"{nombre} #{cnt}", idioma=idioma_actual), wait_for_ready=True)
         print(f"{cnt}: {r.mensaje}")
         
-        # Cada 5 peticiones (índices 4, 9, 14...) llama a Despedir
+        # Cada 5 peticiones llama a Despedir
         if (cnt + 1) % 5 == 0:
             r_despedida = stub.Despedir(saludo_pb2.Peticion(nombre=f"{nombre}", idioma=idioma_actual), wait_for_ready=True)
             print(f"{r_despedida.mensaje}")
