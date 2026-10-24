@@ -1,14 +1,15 @@
-// Definición del servicio gRPC que comparten servidor y cliente
 syntax = "proto3";
+
+service Saludo {
+  rpc Decir (Peticion) returns (Respuesta);
+  rpc Despedir (Peticion) returns (Respuesta);
+}
 
 message Peticion {
   string nombre = 1;
+  string idioma = 2;
 }
 
 message Respuesta {
   string mensaje = 1;
-}
-
-service Saludo {
-  rpc Decir (Peticion) returns (Respuesta);
 }
